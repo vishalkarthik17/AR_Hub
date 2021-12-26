@@ -26,7 +26,7 @@ public class SpawnerScript : MonoBehaviour
     public GameObject GOpanel;
     public TextMeshProUGUI GO_Score_Text;
 
-
+    public bool placed;
     private void Start()
     {
         startTime = Time.time;

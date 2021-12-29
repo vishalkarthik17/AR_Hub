@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ButtonManagerScript : MonoBehaviour
 {
     public static ButtonManagerScript instance;
     public bool acc1, brake1, left1, right1;
     public float scale;
+    
 
     public GameObject scalePanel,ControlPanel;
 
@@ -55,5 +57,9 @@ public class ButtonManagerScript : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void GoHome() {
+        SceneManager.LoadScene("Home");
     }
 }

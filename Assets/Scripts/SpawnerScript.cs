@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class SpawnerScript : MonoBehaviour
 {
-    public Vector3[] SpawnPos;
+    public GameObject[] SpawnPos;
     public GameObject prefab;
 
 
@@ -17,57 +17,51 @@ public class SpawnerScript : MonoBehaviour
     public float decreaseSpawnTimeByLittle = 0.1f;
     public float minSpawnTime = 1f;
 
-    public TextMeshProUGUI timerText;
 
-    private float startTime;
+    
     public int gameTime;
 
-    public GameObject FPS_Player;
-    public GameObject GOpanel;
-    public TextMeshProUGUI GO_Score_Text;
+    public GameObject Base;
+    public GameObject BasePrefab;
 
-    public bool placed;
+     GameObject ButtonManagerMole;
+    
     private void Start()
     {
-        startTime = Time.time;
-        
+        ButtonManagerMole = GameObject.Find("ButtonManagerMole");
+
     }
-    void Update() {
-        float t = Time.time - startTime;
-        string seconds = ((int)(gameTime - t)).ToString();
+    void Update() 
+    {
+        float st = ButtonManagerMole.GetComponent<ButtonManagerMoleScript>().startTime;
+        bool canstart = ButtonManagerMole.GetComponent<ButtonManagerMoleScript>().startGameflag;
 
-
-        if ((gameTime - t) > 0)
-        {
-            timerText.text = seconds;
-            if (currentTime <= 0)
-            {
-                Spawn();
-                currentTime = SpawnTime;
-                if (SpawnTime > minSpawnTime)
-                    SpawnTime = SpawnTime - decreaseSpawnTimeByLittle;
+       if (canstart) 
+       {
+            float t = Time.time - st;
+            if ((gameTime - t) > 0){
+                if (currentTime <= 0){
+                    Spawn();
+                    currentTime = SpawnTime;
+                    if (SpawnTime > minSpawnTime)
+                        SpawnTime = SpawnTime - decreaseSpawnTimeByLittle;
+                }
+                else{
+                    currentTime = currentTime - Time.deltaTime;
+                }
             }
-            else
-            {
-                currentTime = currentTime - Time.deltaTime;
-            }
-
         }
-        else
-            gameOver();
-            
-        
     }
     public void Spawn() {
         int index = Random.Range(0, 9);
-        Instantiate(prefab, SpawnPos[index], Quaternion.identity, transform);
+        GameObject inst=Instantiate(prefab, SpawnPos[index].transform.position,transform.rotation);
+        float parent = Mathf.Abs(Base.transform.localScale.x);
+        float ppp = BasePrefab.transform.localScale.x;
+        inst.transform.localScale = new Vector3(ppp*parent/12, ppp * parent /12, ppp * parent /12);
+
     }
 
-    public void gameOver() {
-        GOpanel.SetActive(true);
-        int s = FPS_Player.GetComponent<Shoot>().score;
-        GO_Score_Text.SetText(s.ToString());
-    }
+    
     public void ReplayGame()
     {
         SceneManager.LoadScene("MoleGame");

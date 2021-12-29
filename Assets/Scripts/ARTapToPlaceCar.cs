@@ -16,6 +16,7 @@ public class ARTapToPlaceCar : MonoBehaviour
     public GameObject infplane;
     ARPlaneManager arpm;
     public GameObject canvas;
+    public GameObject scanPanel;
     // Start is called before the first frame update
     void Awake()
     {
@@ -51,6 +52,7 @@ public class ARTapToPlaceCar : MonoBehaviour
                     spawned = Instantiate(car, hitPose.position, hitPose.rotation);
                     touched = true;
                     canvas.SetActive(true);
+                    scanPanel.SetActive(false);
                     foreach (var plane in arpm.trackables)
                         plane.gameObject.SetActive(false);
                 }
